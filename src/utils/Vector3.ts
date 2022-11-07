@@ -34,6 +34,14 @@ export default class Vector3 {
 
     return this;
   }
+  /**
+   * 根据所有返回值
+   * @param idx 索引
+   * @returns 
+   */
+   get(idx: number) {
+    return this.element[idx];
+  }
   // 返回向量x值
   get x() {
     return this.element[0];
@@ -82,6 +90,13 @@ export default class Vector3 {
     this.x += vec3.x;
     this.y += vec3.y;
     this.z += vec3.z;
+    return this;
+  }
+   // 向量减
+   sub(vec3: Vector3) {
+    this.x -= vec3.x;
+    this.y -= vec3.y;
+    this.z -= vec3.z;
     return this;
   }
   // 向量乘

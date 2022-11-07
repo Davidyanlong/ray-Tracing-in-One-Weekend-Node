@@ -108,7 +108,7 @@ function main() {
   let world = random_scene();
 
   // Camera
-  const lookfrom = new Point3(4, 4, 4); // (13, 2, 3)
+  const lookfrom = new Point3(2, 2, 3); // (13, 2, 3)
   const lookat = new Point3(0, 0, 0);
   const vup = new Vector3(0, 1, 0);
   const dist_to_focus = 1; // 10

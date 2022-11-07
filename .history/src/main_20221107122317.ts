@@ -99,16 +99,14 @@ function main() {
   const aspect_ratio = 16.0 / 9.0;
   const image_width = 400;
   const image_height = image_width / aspect_ratio;
-  // 采样次数
-  const samples_per_pixel = 5;
-  // 光线弹射次数
-  const max_depth = 50; // 50
+  const samples_per_pixel = 50;
+  const max_depth = 100; // 50
 
   // World
   let world = random_scene();
 
   // Camera
-  const lookfrom = new Point3(2, 2, 3); // (13, 2, 3)
+  const lookfrom = new Point3(13, 2, 3); // (13, 2, 3)
   const lookat = new Point3(0, 0, 0);
   const vup = new Vector3(0, 1, 0);
   const dist_to_focus = 1; // 10
@@ -117,7 +115,7 @@ function main() {
     lookfrom,
     lookat,
     vup,
-    60,
+    20,
     aspect_ratio,
     aperture,
     dist_to_focus
@@ -136,11 +134,12 @@ function main() {
         let r = cam.get_ray(u, v);
         pixel_color.add(ray_color(r, world, max_depth));
       }
+      console.log(
+        `完成了${Math.round((i * (image_height - 1-j) * 100) / ((image_height) * (image_width)))}%`
+      );
       str += write_color(pixel_color, samples_per_pixel); //取平均值
     }
-    console.log(
-      `完成了${Math.round(((image_height - 1-j) * 10000) / image_height)/100}%`
-    );
+   
   }
   console.log(
     `完成了100%`

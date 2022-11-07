@@ -99,16 +99,14 @@ function main() {
   const aspect_ratio = 16.0 / 9.0;
   const image_width = 400;
   const image_height = image_width / aspect_ratio;
-  // 采样次数
   const samples_per_pixel = 5;
-  // 光线弹射次数
   const max_depth = 50; // 50
 
   // World
   let world = random_scene();
 
   // Camera
-  const lookfrom = new Point3(2, 2, 3); // (13, 2, 3)
+  const lookfrom = new Point3(13, 2, 3); // (13, 2, 3)
   const lookat = new Point3(0, 0, 0);
   const vup = new Vector3(0, 1, 0);
   const dist_to_focus = 1; // 10

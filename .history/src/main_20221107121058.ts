@@ -97,7 +97,7 @@ function random_scene() {
 function main() {
   // Images
   const aspect_ratio = 16.0 / 9.0;
-  const image_width = 256;
+  const image_width = 128;
   const image_height = image_width / aspect_ratio;
   const samples_per_pixel = 10;
   const max_depth = 50; // 50

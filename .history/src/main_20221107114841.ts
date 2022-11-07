@@ -19,7 +19,7 @@ import Material from "./utils/Material";
  * @param r 屏幕空间摄入的光线
  * @param world 可被击中的对象容器
  * @param depth 光线弹射的次数
- * @returns
+ * @returns 
  */
 function ray_color(r: Ray, world: Hitable, depth: number): Color {
   let rec: HitRecord = new HitRecord();
@@ -47,42 +47,42 @@ function ray_color(r: Ray, world: Hitable, depth: number): Color {
 }
 
 /**
- *
+ * 
  * @returns 构建一个随机场景
  */
 function random_scene() {
   let world = new HittableList();
   let material_ground = new Lambertian(new Color(0.5, 0.5, 0.5));
   world.add(new Sphere(new Point3(0.0, -1000, -1.0), 1000.0, material_ground));
-  for (let a = -11; a < 11; a++) {
-    for (let b = -11; b < 11; b++) {
-      let choose_mat = random_double();
-      let center = new Point3(
-        a + 0.9 * random_double(),
-        0.2,
-        b + 0.9 * random_double()
-      );
-      if (Vector3.sub(center, new Vector3(4, 0.2, 0)).length() > 0.9) {
-        let sphere_material;
-        if (choose_mat < 0.8) {
-          // diffuse
-          let albedo = Vector3.multiplyVector3(Color.random(), Color.random());
-          sphere_material = new Lambertian(albedo);
-        } else if (choose_mat < 0.95) {
-          // metal
-          let albedo = Color.random(0.5, 1);
-          let fuzz = random_double(0, 0.5);
-          sphere_material = new Metal(albedo, fuzz);
-        } else {
-          sphere_material = new Dielectric(1.5);
+    for (let a = -11; a < 11; a++) {
+      for (let b = -11; b < 11; b++) {
+        let choose_mat = random_double();
+        let center = new Point3(
+          a + 0.9 * random_double(),
+          0.2,
+          b + 0.9 * random_double()
+        );
+        if (Vector3.sub(center, new Vector3(4, 0.2, 0)).length() > 0.9) {
+          let sphere_material;
+          if (choose_mat < 0.8) {
+            // diffuse
+            let albedo = Vector3.multiplyVector3(Color.random(), Color.random());
+            sphere_material = new Lambertian(albedo);
+          }else if (choose_mat < 0.95) {
+            // metal
+            let albedo = Color.random(0.5, 1);
+            let fuzz = random_double(0, 0.5);
+            sphere_material = new Metal(albedo, fuzz);
+          } else {
+             sphere_material = new Dielectric(1.5);
+            }
+          world.add(new Sphere(center, 0.2, sphere_material as Material));
         }
-        world.add(new Sphere(center, 0.2, sphere_material as Material));
       }
     }
-  }
 
   let material1 = new Dielectric(1.5);
-  world.add(new Sphere(new Point3(0, 1, 0), 1.0, material1));
+  world.add(new Sphere(new Point3(0,1,0), 1.0, material1));
 
   let material2 = new Lambertian(new Color(0.4, 0.2, 0.1));
   world.add(new Sphere(new Point3(-4, 1, 0), 1.0, material2));
@@ -97,20 +97,20 @@ function random_scene() {
 function main() {
   // Images
   const aspect_ratio = 16.0 / 9.0;
-  const image_width = 256;
+  const image_width = 64;
   const image_height = image_width / aspect_ratio;
   const samples_per_pixel = 10;
-  const max_depth = 50; // 50
+  const max_depth = 5; // 50
 
   // World
   let world = random_scene();
 
   // Camera
-  const lookfrom = new Point3(12, 2, 3); // (13, 2, 3)
+  const lookfrom = new Point3(12, 2, 3);  // (13, 2, 3)
   const lookat = new Point3(0, 0, 0);
   const vup = new Vector3(0, 1, 0);
   const dist_to_focus = 1; // 10
-  const aperture = 0; // 0.1
+  const aperture = 0;  // 0.1
   const cam = new Camera(
     lookfrom,
     lookat,
@@ -124,9 +124,9 @@ function main() {
   // Render
   let str = `P3\n ${image_width} ${image_height} \n255\n`;
   // std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
-  let i,j
-  for (j = image_height - 1; j >= 0; --j) {
-    for (i = 0; i < image_width; ++i) {
+
+  for (let j = image_height - 1; j >= 0; --j) {
+    for (let i = 0; i < image_width; ++i) {
       let pixel_color = new Color(0, 0, 0);
       for (let s = 0; s < samples_per_pixel; ++s) {
         let u = (i + random_double()) / (image_width - 1);
@@ -136,13 +136,7 @@ function main() {
       }
       str += write_color(pixel_color, samples_per_pixel); //取平均值
     }
-    console.log(
-      `完成了${Math.round((i * (image_height - 1-j) * 100) / ((image_height) * (image_width)))}%`
-    );
   }
-  console.log(
-    `完成了100%`
-  );
   writePPM(str);
 }
 console.time("耗时");

@@ -97,10 +97,10 @@ function random_scene() {
 function main() {
   // Images
   const aspect_ratio = 16.0 / 9.0;
-  const image_width = 256;
+  const image_width = 64;
   const image_height = image_width / aspect_ratio;
   const samples_per_pixel = 10;
-  const max_depth = 50; // 50
+  const max_depth = 5; // 50
 
   // World
   let world = random_scene();
@@ -140,9 +140,6 @@ function main() {
       `完成了${Math.round((i * (image_height - 1-j) * 100) / ((image_height) * (image_width)))}%`
     );
   }
-  console.log(
-    `完成了100%`
-  );
   writePPM(str);
 }
 console.time("耗时");

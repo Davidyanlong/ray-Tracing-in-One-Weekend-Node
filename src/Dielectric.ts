@@ -47,7 +47,7 @@ export default class Dielectric extends Material {
     else
       direction = Vector3.refract(unit_direction, rec.normal, refraction_ratio);
 
-    scattered.set(rec.p, direction);
+    scattered.set(rec.p, direction,r_in.time);
     return true;
   }
   /**

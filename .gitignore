@@ -1,0 +1,10 @@
+node_modules/**/*
+ppm/
+
+*.ppm
+
+.history
+
+.vscode
+
+.DS_Store

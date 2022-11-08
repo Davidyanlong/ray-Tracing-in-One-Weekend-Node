@@ -34,6 +34,14 @@ export default class Vector3 {
 
     return this;
   }
+  /**
+   * 根据所有返回值
+   * @param idx 索引
+   * @returns
+   */
+  get(idx: number) {
+    return this.element[idx];
+  }
   // 返回向量x值
   get x() {
     return this.element[0];
@@ -82,6 +90,13 @@ export default class Vector3 {
     this.x += vec3.x;
     this.y += vec3.y;
     this.z += vec3.z;
+    return this;
+  }
+  // 向量减
+  sub(vec3: Vector3) {
+    this.x -= vec3.x;
+    this.y -= vec3.y;
+    this.z -= vec3.z;
     return this;
   }
   // 向量乘
@@ -187,6 +202,11 @@ export default class Vector3 {
   static normalize(v: Vector3) {
     let result = v.clone();
     return result.normalize();
+  }
+  static multiply(v1: Vector3, n: number) {
+    let result = v1.clone();
+    result.multiply(n);
+    return result;
   }
   // 静态方法，向量乘以向量
   static multiplyVector3(v1: Vector3, v2: Vector3) {

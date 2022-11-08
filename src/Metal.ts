@@ -37,7 +37,8 @@ export default class Metal extends Material {
       Vector3.add(
         reflected,
         Vector3.random_in_unit_sphere().multiply(this.fuzz)
-      )
+      ),
+      r_in.time
     );
     attenuation.set(this.albedo);
     return Vector3.dot(scattered.direction, rec.normal) > 0;

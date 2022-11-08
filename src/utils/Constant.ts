@@ -14,7 +14,7 @@ export function degrees_to_radians(degrees: number) {
  * 返回一个随机数
  * @param min 最小值
  * @param max 最大值
- * @returns 
+ * @returns
  */
 export function random_double(min?: number, max?: number) {
   if (min === undefined || max === undefined) {
@@ -23,13 +23,16 @@ export function random_double(min?: number, max?: number) {
   //[min,max)
   return min + (max - min) * Math.random();
 }
+export function random_int(min: number, max: number) {
+  return Math.floor(random_double(min, max + 1));
+}
 
 /**
  * 返回一个在最小值与最大值范围内的值
  * @param x 输入的值
  * @param min 最小值
  * @param max 最大值
- * @returns 
+ * @returns
  */
 export function clamp(x: number, min: number, max: number) {
   if (x < min) return min;
@@ -54,3 +57,18 @@ export const fabs = Math.abs;
 
 // 求绝对值
 export const abs = Math.abs;
+
+// 求最小值
+export const fmin = Math.min;
+
+// 求最大值
+export const fmax = Math.max;
+
+// 求反余弦
+export const acos = Math.acos
+
+// 求反正切
+export const atan2 = Math.atan2
+
+// 向下取整
+export const floor =Math.floor

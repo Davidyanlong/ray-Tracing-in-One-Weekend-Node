@@ -2,6 +2,7 @@ import Ray from "./Ray";
 import Point3 from "./Point3";
 import Vector3 from "./Vector3";
 import Material from "./Material";
+import type AABB from "./AABB";
 
 /**
  * 记录射线碰撞点的信息
@@ -11,6 +12,8 @@ export class HitRecord {
   normal: Vector3 = new Vector3(); // 碰撞面的法线
   mat_ptr: Material | null = null; // 碰撞面的材质
   t: number = 0; // 射线碰撞的时间
+  u: number = 0; //uv坐标 u
+  v: number = 0; // uv坐标 v
   front_face: boolean = true; // 射线碰撞的是正面还是反面
   /**
    * 计算射线打到的是正面还是反面，并记录法线
@@ -33,6 +36,8 @@ export class HitRecord {
     this.mat_ptr = h.mat_ptr;
     this.t = h.t;
     this.front_face = h.front_face;
+    this.u = h.u
+    this.v = h.v
   }
 }
 
@@ -48,4 +53,9 @@ export default abstract class Hitable {
    * @param rec //记录射线打到的信息
    */
   abstract hit(r: Ray, t_min: number, t_max: number, rec: HitRecord): boolean;
+  abstract bounding_box(
+    time0: number,
+    time1: number,
+    output_box: AABB
+  ): boolean;
 }

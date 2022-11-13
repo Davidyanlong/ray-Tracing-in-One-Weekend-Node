@@ -97,10 +97,10 @@ function random_scene() {
 function main() {
   // Images
   const aspect_ratio = 16.0 / 9.0;
-  const image_width = 400;
+  const image_width = 1200;
   const image_height = Math.floor(image_width / aspect_ratio);
   // 采样次数
-  const samples_per_pixel = 50;
+  const samples_per_pixel = 500;
   // 光线弹射次数
   const max_depth = 50 ; // 50
 

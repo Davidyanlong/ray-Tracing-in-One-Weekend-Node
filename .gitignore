@@ -1,7 +1,4 @@
 node_modules/**/*
-ppm/
-
-*.ppm
 
 .history
 

@@ -32,9 +32,9 @@ export default class AABB {
    */
   hit(r: Ray, t_min: number, t_max: number) {
     for (let a = 0; a < 3; a++) {
-      let invD = 1.0 / r.direction.get(a);
-      let t0 = (this.min.get(a) - r.origin.get(a)) * invD;
-      let t1 = (this.max.get(a) - r.origin.get(a)) * invD;
+      let invD = 1.0 / r.direction.getByIndex(a);
+      let t0 = (this.min.getByIndex(a) - r.origin.getByIndex(a)) * invD;
+      let t1 = (this.max.getByIndex(a) - r.origin.getByIndex(a)) * invD;
       if (invD < 0.0) {
         let temp = t0;
         t0 = t1;

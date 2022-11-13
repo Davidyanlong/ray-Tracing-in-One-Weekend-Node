@@ -39,8 +39,16 @@ export default class Vector3 {
    * @param idx 索引
    * @returns
    */
-  get(idx: number) {
+  getByIndex(idx: number) {
     return this.element[idx];
+  }
+  /**
+   * 根据索引设置值
+   * @param idx 索引
+   * @param val 值
+   */
+  setByIndex(idx: number, val: number) {
+    this.element[idx] = val;
   }
   // 返回向量x值
   get x() {

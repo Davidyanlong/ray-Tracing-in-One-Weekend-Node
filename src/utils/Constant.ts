@@ -71,4 +71,7 @@ export const acos = Math.acos
 export const atan2 = Math.atan2
 
 // 向下取整
-export const floor =Math.floor
+export const floor = Math.floor
+
+// log
+export const log = Math.log

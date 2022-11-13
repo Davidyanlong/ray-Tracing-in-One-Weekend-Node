@@ -2,16 +2,24 @@ import AABB from "./AABB";
 import Hitable, { HitRecord } from "./Hitable";
 import HitTableList from "./HitTableList";
 import Ray from "./Ray";
-import { random_int } from "./Constant";
+import { floor, random_int } from "./Constant";
 
 export default class BvhNode extends Hitable {
   left: Hitable | null = null;
   right: Hitable | null = null;
   box: AABB = new AABB();
-  constructor(list?: HitTableList, time0: number = 0, time1: number = 0) {
+  constructor(
+    list: HitTableList | Hitable[],
+    start: number = 0,
+    end: number = 0,
+    time0: number = 0,
+    time1: number = 0
+  ) {
     super();
-    if (list !== undefined) {
-      this.set(list.objects, 0, list.objects.length, time0, time1);
+    if (list instanceof HitTableList) {
+      this.set(list.objects, 0, list.objects.length, start, end);
+    } else {
+      this.set(list, start, end, time0, time1);
     }
   }
   set(
@@ -25,13 +33,13 @@ export default class BvhNode extends Hitable {
 
     let axis = random_int(0, 2);
     let comparator =
-      axis == 0
+      axis === 0
         ? this.box_x_compare
-        : axis == 1
+        : axis === 1
         ? this.box_y_compare
         : this.box_z_compare; // 这里相当于一个if else语句，判定随机值bvh_node
 
-    let object_span = end - start;
+    let object_span = floor(end - start);
 
     if (object_span == 1) {
       this.left = this.right = objects[start];
@@ -44,14 +52,13 @@ export default class BvhNode extends Hitable {
         this.right = objects[start];
       }
     } else {
-      objects = objects.sort(comparator);
+
+      objects = sort(objects,start,end,(a, b) => (comparator(a, b) ? -1 : 1))
       // std::sort(objects.begin() + start, objects.begin() + end, comparator);
 
-      let mid = start + object_span / 2;
-      this.left = new BvhNode() as BvhNode;
-      (this.left as BvhNode).set(objects, start, mid, time0, time1);
-      this.right = new BvhNode() as BvhNode;
-      (this.right as BvhNode).set(objects, mid, end, time0, time1);
+      let mid = floor(start + object_span / 2);
+      this.left = new BvhNode(objects, start, mid, time0, time1);
+      this.right = new BvhNode(objects, mid, end, time0, time1);
     }
 
     let box_left = new AABB(),
@@ -85,7 +92,7 @@ export default class BvhNode extends Hitable {
       console.error("No bounding box in bvh_node constructor.\n");
     }
 
-    return box_a.min.get(axis) < box_b.min.get(axis) ? -1 : 1;
+    return box_a.min.getByIndex(axis) < box_b.min.getByIndex(axis);
   }
 
   box_x_compare(a: Hitable, b: Hitable) {
@@ -97,4 +104,17 @@ export default class BvhNode extends Hitable {
   box_z_compare(a: Hitable, b: Hitable) {
     return BvhNode.box_compare(a, b, 2);
   }
+}
+
+function sort<T>(
+  arr: T[],
+  begin: number,
+  end: number,
+  sortFn: (a: T, b: T) => number
+) {
+  let startArr = arr.filter((v, index) => index < begin);
+  let sortArr = arr.filter((v, index) => index >= begin && index < end);
+  let endArr = arr.filter((v, index) => index >= end);
+  sortArr = sortArr.sort(sortFn);
+  return [...startArr, ...sortArr, ...endArr];
 }

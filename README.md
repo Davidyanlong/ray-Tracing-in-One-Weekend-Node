@@ -1,11 +1,12 @@
-# Ray Tracing in One Weekend Node版本的实现
+# Ray Tracing in The Next Week Node版本的实现
 
 # 中文翻译教程
-[Ray Tracing in One Weekend](https://blog.csdn.net/xiji333/article/details/108730223)
+[Ray Tracing in The next Weekend 1](https://zhuanlan.zhihu.com/p/371183553)
+[Ray Tracing in The next Weekend 2](https://zhuanlan.zhihu.com/p/371226369)
 
 # 英文原教程
 
-[Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
+[Ray Tracing in The next Weekend](https://raytracing.github.io/books/RayTracingTheNextWeek.html)
 
 
 # 运行示例

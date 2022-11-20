@@ -6,8 +6,8 @@ import Ray from "./Ray";
 /**
  * 抽象类，定义材质
  */
-export default abstract class Material {
-  emitted(u: number, v: number, p: Point3) {
+export default  class Material {
+  emitted(r_in: Ray, rec: HitRecord,u: number, v: number, p: Point3) {
     return new Color(0, 0, 0);
   }
   /**
@@ -17,10 +17,20 @@ export default abstract class Material {
    * @param attenuation 如果发生了散射，应该将射线衰减多少
    * @param scattered 散射的光线
    */
-  abstract scatter(
+  scatter(
     r_in: Ray,
     rec: HitRecord,
     attenuation: Color,
+    scattered: Ray,
+    pdf: { pdf: number }
+  ): boolean {
+    return false;
+  }
+  scattering_pdf(
+    r_in: Ray,
+    rec: HitRecord,
     scattered: Ray
-  ): boolean;
+  ) {
+    return 0;
+  }
 }

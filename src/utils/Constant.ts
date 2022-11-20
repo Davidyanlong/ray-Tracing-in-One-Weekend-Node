@@ -1,4 +1,7 @@
 // Constants
+
+import Vector3 from "./Vector3";
+
 // 无群大
 export const infinity = Number.MAX_VALUE;
 // π
@@ -25,6 +28,18 @@ export function random_double(min?: number, max?: number) {
 }
 export function random_int(min: number, max: number) {
   return Math.floor(random_double(min, max + 1));
+}
+
+export function random_cosine_direction() {
+  let r1 = random_double();
+  let r2 = random_double();
+  let z = sqrt(1 - r2);
+
+  let phi = 2 * PI * r1;
+  let x = cos(phi) * sqrt(r2);
+  let y = sin(phi) * sqrt(r2);
+
+  return new Vector3(x, y, z);
 }
 
 /**

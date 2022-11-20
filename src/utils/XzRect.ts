@@ -1,4 +1,5 @@
 import AABB from "./AABB";
+import { fabs, infinity, random_double } from "./Constant";
 import Hitable, { HitRecord } from "./Hitable";
 import Material from "./Material";
 import Point3 from "./Point3";
@@ -57,9 +58,28 @@ export default class XzRect extends Hitable {
   }
   bounding_box(time0: number, time1: number, output_box: AABB): boolean {
     output_box.set(
-      new Point3(this.x0, this.k-0.0001,this.z0),
-      new Point3(this.x1, this.k+0.0001,this.z1)
+      new Point3(this.x0, this.k - 0.0001, this.z0),
+      new Point3(this.x1, this.k + 0.0001, this.z1)
     );
     return true;
+  }
+  pdf_value(origin: Point3, v: Vector3) {
+    let rec = new HitRecord();
+    if (!this.hit(new Ray(origin, v), 0.001, infinity, rec)) return 0;
+
+    let area = (this.x1 - this.x0) * (this.z1 - this.z0);
+    let distance_squared = rec.t * rec.t * v.length_squared();
+    let cosine = fabs(Vector3.dot(v, rec.normal) / v.length());
+
+    return distance_squared / (cosine * area);
+  }
+
+  random(origin: Vector3) {
+    let random_point = new Point3(
+      random_double(this.x0, this.x1),
+      this.k,
+      random_double(this.z0, this.z1)
+    );
+    return Vector3.sub(random_point, origin);
   }
 }

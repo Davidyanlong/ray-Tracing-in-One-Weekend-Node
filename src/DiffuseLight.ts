@@ -24,7 +24,8 @@ export default class DiffuseLight extends Material {
   ): boolean {
     return false; // 光源并不散射光线
   }
-  emitted(u: number, v: number, p: Point3): Color {
-    return this.emit.value(u, v, p);
+  emitted(r_in: Ray, rec: HitRecord, u: number, v: number, p: Point3) {
+    if (rec.front_face) return this.emit.value(u, v, p);
+    else return new Color(0, 0, 0);
   }
 }

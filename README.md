@@ -1,4 +1,4 @@
-# Ray Tracing in The Next Week Node版本的实现
+# Ray Tracing in Rest of Your Life Node版本的实现
 
 # 中文翻译教程
 [Ray Tracing in The Rest of Your Life 1](https://zhuanlan.zhihu.com/p/371231759)

@@ -1,6 +1,9 @@
 import AABB from "./AABB";
+import { random_int } from "./Constant";
 import Hitable, { HitRecord } from "./Hitable";
+import Point3 from "./Point3";
 import Ray from "./Ray";
+import Vector3 from "./Vector3";
 /**
  * 容器类，保存场景中的物体
  */
@@ -68,5 +71,20 @@ export default class HitTableList extends Hitable {
     }
 
     return true;
+  }
+  pdf_value(o: Point3, v: Vector3) {
+    let weight = 1.0 / this.objects.length;
+    let sum = 0.0;
+
+    for (let i = 0; i < this.objects.length; i++) {
+      let object = this.objects[i];
+      sum += weight * object.pdf_value(o, v);
+    }
+
+    return sum;
+  }
+  random(o: Vector3) {
+    let int_size = this.objects.length;
+    return this.objects[random_int(0, int_size - 1)].random(o);
   }
 }

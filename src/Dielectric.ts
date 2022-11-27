@@ -1,4 +1,4 @@
-import Material from "./utils/Material";
+import Material, { ScatterRecord } from "./utils/Material";
 import Vector3 from "./utils/Vector3";
 import { sqrt, random_double } from "./utils/Constant";
 import Ray from "./utils/Ray";
@@ -13,20 +13,15 @@ export default class Dielectric extends Material {
    * 初始化
    * @param ri 折射系数
    */
-  constructor(ri: number) {
+  constructor(index_of_refraction: number) {
     super();
-    this.ir = ri;
+    this.ir = index_of_refraction;
   }
-  /**
-   * 计算击中后关系的散射
-   * @param r_in 入射光线
-   * @param rec 光线击中的记录
-   * @param attenuation 如果发生了散射，应该将射线衰减多少
-   * @param scattered 散射的光线
-   */
-  scatter(r_in: Ray, rec: HitRecord, attenuation: Color, scattered: Ray) {
-    attenuation.set(1.0, 1.0, 1.0);
-    //判断交点是在外部还是内部 front_face为true时-->外部
+  scatter(r_in: Ray, rec: HitRecord, srec: ScatterRecord) {
+    srec.is_specular = true;
+    srec.pdf_ptr = null;
+    srec.attenuation = new Color(1.0, 1.0, 1.0);
+
     let refraction_ratio = rec.front_face ? 1.0 / this.ir : this.ir;
     let unit_direction = Vector3.normalize(r_in.direction);
 
@@ -47,7 +42,7 @@ export default class Dielectric extends Material {
     else
       direction = Vector3.refract(unit_direction, rec.normal, refraction_ratio);
 
-    scattered.set(rec.p, direction,r_in.time);
+    srec.specular_ray = new Ray(rec.p, direction, r_in.time);
     return true;
   }
   /**

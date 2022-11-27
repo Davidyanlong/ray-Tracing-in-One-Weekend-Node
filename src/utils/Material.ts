@@ -1,13 +1,14 @@
 import Color from "./Color";
 import { HitRecord } from "./Hitable";
+import PDF from "./PDF";
 import Point3 from "./Point3";
 import Ray from "./Ray";
 
 /**
  * 抽象类，定义材质
  */
-export default  class Material {
-  emitted(r_in: Ray, rec: HitRecord,u: number, v: number, p: Point3) {
+export default class Material {
+  emitted(r_in: Ray, rec: HitRecord, u: number, v: number, p: Point3) {
     return new Color(0, 0, 0);
   }
   /**
@@ -17,20 +18,17 @@ export default  class Material {
    * @param attenuation 如果发生了散射，应该将射线衰减多少
    * @param scattered 散射的光线
    */
-  scatter(
-    r_in: Ray,
-    rec: HitRecord,
-    attenuation: Color,
-    scattered: Ray,
-    pdf: { pdf: number }
-  ): boolean {
+  scatter(r_in: Ray, rec: HitRecord, srec: ScatterRecord): boolean {
     return false;
   }
-  scattering_pdf(
-    r_in: Ray,
-    rec: HitRecord,
-    scattered: Ray
-  ) {
+  scattering_pdf(r_in: Ray, rec: HitRecord, scattered: Ray) {
     return 0;
   }
+}
+
+export class ScatterRecord {
+  specular_ray: Ray = new Ray();
+  is_specular: boolean = false;
+  attenuation: Color = new Color();
+  pdf_ptr: PDF | null = null;
 }

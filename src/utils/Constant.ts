@@ -55,6 +55,19 @@ export function clamp(x: number, min: number, max: number) {
   return x;
 }
 
+ export function random_to_sphere( radius:number,distance_squared:number) {
+  let r1 = random_double();
+  let r2 = random_double();
+  let z = 1 + r2*(sqrt(1-radius*radius/distance_squared) - 1);
+
+  let phi = 2*PI*r1;
+  let x = cos(phi)*sqrt(1-z*z);
+  let y = sin(phi)*sqrt(1-z*z);
+
+  return new Vector3(x, y, z);
+
+}
+
 // 求平方根，这里是为了和C++代码对齐
 export const sqrt = Math.sqrt;
 

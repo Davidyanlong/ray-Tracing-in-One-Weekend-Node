@@ -1,10 +1,11 @@
 import Vector3 from "./Vector3";
 import Hitable, { HitRecord } from "./Hitable";
-import { acos, atan2, PI, sqrt } from "./Constant";
+import { acos, atan2, infinity, PI, random_to_sphere, sqrt } from "./Constant";
 import Point3 from "./Point3";
 import Material from "./Material";
 import Ray from "./Ray";
 import type AABB from "./AABB";
+import ONB from "./onb";
 
 /**
  * 球体类，继承自Hitable
@@ -75,6 +76,27 @@ export default class Sphere extends Hitable {
       )
     );
     return true;
+  }
+  pdf_value(o: Point3, v: Vector3) {
+    const rec = new HitRecord();
+    if (!this.hit(new Ray(o, v), 0.001, infinity, rec)) return 0;
+
+    let cos_theta_max = sqrt(
+      1 -
+        (this.radius * this.radius) /
+          Vector3.sub(this.center, o).length_squared()
+    );
+    let solid_angle = 2 * PI * (1 - cos_theta_max);
+
+    return 1 / solid_angle;
+  }
+  random(o: Point3) {
+    let direction = Vector3.sub(this.center, o);
+    let distance_squared = direction.length_squared();
+    let uvw = new ONB();
+    uvw.build_from_w(direction);
+    return uvw.local(random_to_sphere(this.radius, distance_squared));
+
   }
   static get_sphere_uv(p: Point3, u?: number, v?: number) {
     // p: a given point on the sphere of radius one, centered at the origin.

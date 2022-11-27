@@ -79,9 +79,9 @@ export default class Camera {
     let viewport_height = 2.0 * h;
     let viewport_width = aspect_ratio * viewport_height;
 
-    this.w = Vector3.sub(lookfrom, lookat);
-    this.u = Vector3.normalize(Vector3.cross(vup, this.w));
-    this.v = Vector3.cross(this.w, this.u);
+    this.w = Vector3.normalize(Vector3.sub(lookfrom, lookat));
+    this.u = Vector3.normalize(Vector3.normalize(Vector3.cross(vup, this.w)));
+    this.v = Vector3.normalize(Vector3.cross(this.w, this.u));
 
     this.origin = lookfrom;
     this.horizontal = this.u.clone().multiply(focus_dist * viewport_width);
@@ -90,9 +90,8 @@ export default class Camera {
     let v2 = this.vertical.clone().multiply(0.5);
     let ww = this.w.clone();
     this.lower_left_corner = Vector3.sub(this.origin, h2);
-    this.lower_left_corner = Vector3.sub(this.lower_left_corner, v2);
-    this.lower_left_corner = Vector3.sub(
-      this.lower_left_corner,
+    this.lower_left_corner.sub(v2);
+    this.lower_left_corner.sub(
       ww.multiply(focus_dist)
     );
 
@@ -115,9 +114,9 @@ export default class Camera {
     let hs = this.horizontal.clone().multiply(s);
     let vt = this.vertical.clone().multiply(t);
     let dir = Vector3.add(this.lower_left_corner, hs);
-    dir = Vector3.add(dir, vt);
-    dir = Vector3.sub(dir, this.origin);
-    dir = Vector3.sub(dir, offset);
+    dir.add(vt);
+    dir.sub(this.origin);
+    dir.sub(offset);
 
     return new Ray(
       Vector3.add(this.origin, offset),

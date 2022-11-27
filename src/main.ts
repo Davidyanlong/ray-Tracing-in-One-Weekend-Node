@@ -97,27 +97,27 @@ function random_scene() {
 function main() {
   // Images
   const aspect_ratio = 16.0 / 9.0;
-  const image_width = 400;
-  const image_height = image_width / aspect_ratio;
+  const image_width = 1200;
+  const image_height = Math.floor(image_width / aspect_ratio);
   // 采样次数
-  const samples_per_pixel = 5;
+  const samples_per_pixel = 500;
   // 光线弹射次数
-  const max_depth = 50; // 50
+  const max_depth = 50 ; // 50
 
   // World
   let world = random_scene();
 
   // Camera
-  const lookfrom = new Point3(4, 4, 4); // (13, 2, 3)
+  const lookfrom = new Point3(13, 2, 3); // (13, 2, 3)
   const lookat = new Point3(0, 0, 0);
   const vup = new Vector3(0, 1, 0);
-  const dist_to_focus = 1; // 10
-  const aperture = 0; // 0.1
+  const dist_to_focus = 10; // 10
+  const aperture = 0.1; // 0.1
   const cam = new Camera(
     lookfrom,
     lookat,
     vup,
-    120,
+    20,
     aspect_ratio,
     aperture,
     dist_to_focus

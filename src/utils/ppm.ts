@@ -1,5 +1,5 @@
 import Color from "./Color";
-import { clamp, sqrt } from "./Constant";
+import { abs, clamp, infinity, sqrt } from "./Constant";
 
 import fs from "fs";
 import path from "path";
@@ -14,6 +14,10 @@ export function write_color(pixel_color: Color, samples_per_pixel: number) {
   let r = pixel_color.x;
   let g = pixel_color.y;
   let b = pixel_color.z;
+
+  if (r !== r || abs(r)===infinity) r = 0.0;
+  if (g !== g || abs(g)===infinity) g = 0.0;
+  if (b !== b || abs(b)===infinity) b = 0.0;
 
   //根据样本数对颜色取平均值
   // Divide the color by the number of samples and gamma-correct for gamma=2.0.

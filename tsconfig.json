@@ -17,6 +17,6 @@
     "declarationDir": "dist/type", // 声明文件打包的位置
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "src/test.js"],
   "exclude": ["node_modules"]
 }

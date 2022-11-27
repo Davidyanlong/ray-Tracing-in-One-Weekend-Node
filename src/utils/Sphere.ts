@@ -1,17 +1,19 @@
 import Vector3 from "./Vector3";
 import Hitable, { HitRecord } from "./Hitable";
-import { sqrt } from "./Constant";
+import { acos, atan2, infinity, PI, random_to_sphere, sqrt } from "./Constant";
 import Point3 from "./Point3";
 import Material from "./Material";
 import Ray from "./Ray";
+import type AABB from "./AABB";
+import ONB from "./onb";
 
 /**
  * 球体类，继承自Hitable
  */
 export default class Sphere extends Hitable {
-  center: Point3;  // 球心
-  radius: number;  // 半径
-  mat_ptr: Material | null = null; // 球体的材质，这里是一个引用 
+  center: Point3; // 球心
+  radius: number; // 半径
+  mat_ptr: Material | null = null; // 球体的材质，这里是一个引用
   /**
    * 初始化一个球对象
    * @param {*} cer 球点
@@ -56,7 +58,59 @@ export default class Sphere extends Hitable {
       1 / this.radius
     );
     rec.set_face_normal(r, outward_normal);
+    let [u, v] = Sphere.get_sphere_uv(outward_normal);
+    rec.v = v;
+    rec.u = u;
     rec.mat_ptr = this.mat_ptr;
     return true;
+  }
+  bounding_box(time0: number, time1: number, output_box: AABB) {
+    output_box.set(
+      Vector3.sub(
+        this.center,
+        new Point3(this.radius, this.radius, this.radius)
+      ),
+      Vector3.add(
+        this.center,
+        new Point3(this.radius, this.radius, this.radius)
+      )
+    );
+    return true;
+  }
+  pdf_value(o: Point3, v: Vector3) {
+    const rec = new HitRecord();
+    if (!this.hit(new Ray(o, v), 0.001, infinity, rec)) return 0;
+
+    let cos_theta_max = sqrt(
+      1 -
+        (this.radius * this.radius) /
+          Vector3.sub(this.center, o).length_squared()
+    );
+    let solid_angle = 2 * PI * (1 - cos_theta_max);
+
+    return 1 / solid_angle;
+  }
+  random(o: Point3) {
+    let direction = Vector3.sub(this.center, o);
+    let distance_squared = direction.length_squared();
+    let uvw = new ONB();
+    uvw.build_from_w(direction);
+    return uvw.local(random_to_sphere(this.radius, distance_squared));
+
+  }
+  static get_sphere_uv(p: Point3, u?: number, v?: number) {
+    // p: a given point on the sphere of radius one, centered at the origin.
+    // u: returned value [0,1] of angle around the Y axis from X=-1.
+    // v: returned value [0,1] of angle from Y=-1 to Y=+1.
+    //     <1 0 0> yields <0.50 0.50>       <-1  0  0> yields <0.00 0.50>
+    //     <0 1 0> yields <0.50 1.00>       < 0 -1  0> yields <0.50 0.00>
+    //     <0 0 1> yields <0.25 0.50>       < 0  0 -1> yields <0.75 0.50>
+
+    let theta = acos(-p.y);
+    let phi = atan2(-p.z, p.x) + PI;
+
+    u = phi / (2 * PI);
+    v = theta / PI;
+    return [u, v];
   }
 }

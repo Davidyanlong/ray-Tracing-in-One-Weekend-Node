@@ -90,7 +90,7 @@ function main() {
   // 采样次数
   let samples_per_pixel = 1000;
   // 光线弹射次数
-  const max_depth = 50; // 50
+  const max_depth = 50 ; // 50
 
   let lights = new HittableList();
   let color = new Color(150, 150, 150);
